@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#221a38">
+  <title>Styleverse — Your closet, styled like an editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 80'%3E%3Cellipse cx='32' cy='40' rx='22' ry='30' fill='%23221a38' stroke='%23efedf6' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="gate" id="gate">
+    <div class="glow" aria-hidden="true"></div>
+    <header class="topbar">
+      <span class="mark">Styleverse</span>
+      <span class="eyebrow">Private beta</span>
+    </header>
+
+    <main class="gate-main">
+      <div class="mirror" aria-hidden="true">
+        <span class="mirror-glass">
+          <i></i><i></i><i></i>
+        </span>
+      </div>
+      <p class="kicker">Your style, elevated</p>
+      <h1>Your wardrobe, <br><em>understood</em></h1>
+      <p class="lede">The clothes you already own, styled for the week, the trip, and the occasion.</p>
+
+      <form class="panel" id="login-form" autocomplete="off">
+        <label class="field">
+          <span>Member ID</span>
+          <input id="member-id" name="member-id" type="password" autocomplete="off" spellcheck="false" required>
+        </label>
+        <label class="field">
+          <span>Passcode</span>
+          <input id="passcode" name="passcode" type="password" autocomplete="off" spellcheck="false" required>
+        </label>
+        <p class="form-note" id="login-note" role="status"></p>
+        <button class="btn primary" type="submit">Enter the closet</button>
+        <p class="micro">Demo access is filled in. Continue when you are ready.</p>
+      </form>
+    </main>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <aside class="rail">
+      <div class="rail-brand">
+        <span class="mini-mirror" aria-hidden="true"></span>
+        <span class="mark">Styleverse</span>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <button type="button" data-view="closet" class="is-on">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM8 7V5h8v2"/></svg>
+          Closet
+        </button>
+        <button type="button" data-view="week">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 9h16M8 3v4M16 3v4"/></svg>
+          Week
+        </button>
+        <button type="button" data-view="pack">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="7" width="12" height="13" rx="1"/><path d="M9 7V5h6v2M9 12h6"/></svg>
+          Packing
+        </button>
+        <button type="button" data-view="style">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 4.2L18 9l-4.4 1.8L12 15l-1.6-4.2L6 9l4.4-1.8zM18 14l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
+          Stylist
+        </button>
+      </nav>
+      <p class="rail-foot">Phase one · the closet</p>
+    </aside>
+
+    <section class="workspace">
+      <header class="workspace-bar">
+        <div>
+          <p class="eyebrow" id="view-kicker">Closet</p>
+          <h2 id="view-title">Everything you own</h2>
+        </div>
+        <div class="bar-actions">
+          <span class="count" id="piece-count"></span>
+          <button type="button" class="btn ghost" id="sign-out">Sign out</button>
+        </div>
+      </header>
+
+      <div class="view is-on" id="view-closet">
+        <p class="intro">A digital wardrobe, ready to be styled. Filter it, or add a piece from a description.</p>
+        <div class="toolbar">
+          <div class="chips" id="filters" role="tablist">
+            <button type="button" data-filter="All" class="is-on" role="tab">All</button>
+            <button type="button" data-filter="Tops" role="tab">Tops</button>
+            <button type="button" data-filter="Bottoms" role="tab">Bottoms</button>
+            <button type="button" data-filter="Dresses" role="tab">Dresses</button>
+            <button type="button" data-filter="Outerwear" role="tab">Outerwear</button>
+            <button type="button" data-filter="Shoes" role="tab">Shoes</button>
+            <button type="button" data-filter="Accessories" role="tab">Accessories</button>
+          </div>
+          <label class="search">
+            <span class="sr">Search the closet</span>
+            <input id="search" type="search" placeholder="Search pieces" autocomplete="off">
+          </label>
+        </div>
+        <div class="grid" id="closet-grid"></div>
+        <div class="add-row">
+          <button type="button" class="btn primary" id="open-add">Add a piece</button>
+          <button type="button" class="btn text" id="restore">Restore sample closet</button>
+        </div>
+      </div>
+
+      <div class="view" id="view-week" hidden>
+        <p class="intro">Dressed for the week before it starts. A sample calendar is linked, with weather beside each plan.</p>
+        <div class="days" id="days"></div>
+        <article class="detail" id="day-detail" aria-live="polite"></article>
+      </div>
+
+      <div class="view" id="view-pack" hidden>
+        <p class="intro">Pack less. Wear more. A trip is built from pieces that mix, layer, and rewear.</p>
+        <form class="split" id="pack-form">
+          <div class="panel slim">
+            <label class="field">
+              <span>City</span>
+              <input id="city" type="text" value="Lisbon" autocomplete="off">
+            </label>
+            <div class="pair">
+              <label class="field">
+                <span>From</span>
+                <input id="from" type="date">
+              </label>
+              <label class="field">
+                <span>Until</span>
+                <input id="until" type="date">
+              </label>
+            </div>
+            <p class="form-note" id="pack-note" role="status"></p>
+            <button class="btn primary" type="submit" id="pack-btn">Build the list</button>
+          </div>
+          <div class="result" id="pack-result" aria-live="polite">
+            <p class="empty">Your checklist will appear here.</p>
+          </div>
+        </form>
+      </div>
+
+      <div class="view" id="view-style" hidden>
+        <p class="intro">Outfits from what you own. Set the occasion, pin a piece, or set one aside.</p>
+        <form class="split" id="style-form">
+          <div class="panel slim">
+            <label class="field">
+              <span>Occasion</span>
+              <select id="occasion">
+                <option>Office</option>
+                <option selected>Dinner</option>
+                <option>Wedding</option>
+                <option>Weekend</option>
+                <option>Travel</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Dress code</span>
+              <select id="dress">
+                <option>Casual</option>
+                <option selected>Smart casual</option>
+                <option>Formal</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Mood</span>
+              <select id="mood">
+                <option selected>Effortless</option>
+                <option>Bold</option>
+                <option>Soft</option>
+                <option>Editorial</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Pin a piece</span>
+              <select id="pin"></select>
+            </label>
+            <label class="field">
+              <span>Set a piece aside</span>
+              <select id="exclude"></select>
+            </label>
+            <p class="form-note" id="style-note" role="status"></p>
+            <button class="btn primary" type="submit" id="style-btn">Style this</button>
+          </div>
+          <div class="result" id="style-result" aria-live="polite">
+            <p class="empty">A look from your closet will appear here.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <dialog class="sheet" id="add-sheet">
+    <form id="add-form" method="dialog">
+      <div class="sheet-head">
+        <h3>Add a piece</h3>
+        <button type="button" class="icon-btn" id="close-add" aria-label="Close">×</button>
+      </div>
+      <p class="micro left">Describe it, or paste a product link. The sample closet recognizes a few familiar pieces.</p>
+      <label class="field">
+        <span>Name or link</span>
+        <input id="add-name" type="text" placeholder="Ivory silk blouse" autocomplete="off" required>
+      </label>
+      <label class="field">
+        <span>Category</span>
+        <select id="add-category">
+          <option>Tops</option>
+          <option>Bottoms</option>
+          <option>Dresses</option>
+          <option>Outerwear</option>
+          <option>Shoes</option>
+          <option>Accessories</option>
+        </select>
+      </label>
+      <fieldset class="swatches">
+        <legend>Color</legend>
+        <div class="swatch-row" id="swatches"></div>
+      </fieldset>
+      <label class="field">
+        <span>Season</span>
+        <select id="add-season">
+          <option>All</option>
+          <option>Warm</option>
+          <option>Cold</option>
+        </select>
+      </label>
+      <button class="btn primary" type="submit">Save to closet</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
